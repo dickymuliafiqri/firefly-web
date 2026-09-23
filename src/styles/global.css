@@ -1,0 +1,466 @@
+@import "@fontsource/fraunces/300.css";
+@import "@fontsource/fraunces/400.css";
+@import "@fontsource/fraunces/500.css";
+@import "@fontsource/fraunces/600.css";
+@import "@fontsource/fraunces/700.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sky-top: #020617;
+  --sky-mid: #08152a;
+  --ink: #e8eef9;
+  --muted: #93a5c4;
+  --faint: #64748b;
+  --biolum: #bef264;
+  --biolum-bright: #f0ffb4;
+  --soil: #140e08;
+  --line: rgba(255, 255, 255, 0.08);
+  --maxw: 1080px;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, #0b1e3d 100%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(190, 242, 100, 0.25);
+}
+
+/* Page scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #050b18;
+}
+::-webkit-scrollbar-thumb {
+  background: #1d2c47;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3a55;
+}
+
+/* ============ DIAGRAM SHARED ============ */
+@keyframes dgflow {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+.dg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.dg .ghostpath {
+  fill: none;
+  stroke: none;
+}
+.dg .base {
+  fill: none;
+  stroke: #2a3a55;
+  stroke-width: 1.5;
+}
+.dg .flow {
+  fill: none;
+  stroke: var(--biolum);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 3 9;
+  animation: dgflow 1.35s linear infinite;
+  opacity: 0.9;
+}
+.dg .flow.f2 {
+  animation-duration: 1.7s;
+}
+.dg .flow.f3 {
+  animation-duration: 1.1s;
+}
+.dg .flow.f4 {
+  animation-duration: 1.9s;
+}
+.dg .flow.f5 {
+  animation-duration: 2.2s;
+}
+
+.dg .node {
+  fill: rgba(10, 18, 34, 0.92);
+  stroke: #3b4d6b;
+  stroke-width: 1.5;
+}
+.dg .node.ff {
+  stroke: rgba(190, 242, 100, 0.55);
+}
+.dg text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: #8ea3c4;
+}
+.dg .pkt {
+  fill: var(--biolum-bright);
+}
+.dg .pkt.dim {
+  fill: var(--biolum);
+  opacity: 0.55;
+}
+.dg .st {
+  font-size: 10.5px;
+}
+.dg .st.red {
+  fill: #f87171;
+}
+.dg .st.grn {
+  fill: var(--biolum);
+}
+
+/* Key failover keyframes (9s loop) */
+.dg .kf-f1 {
+  animation:
+    dgflow 1.3s linear infinite,
+    kffade1 9s linear infinite;
+}
+.dg .kf-f2 {
+  animation:
+    dgflow 1.3s linear infinite,
+    kffade2 9s linear infinite;
+  opacity: 0.08;
+}
+.dg .kf-k1 {
+  animation: kfdim 9s linear infinite;
+}
+@keyframes kffade1 {
+  0%,
+  50% {
+    opacity: 0.9;
+  }
+  60%,
+  100% {
+    opacity: 0.08;
+  }
+}
+@keyframes kffade2 {
+  0%,
+  55% {
+    opacity: 0.08;
+  }
+  64%,
+  100% {
+    opacity: 0.9;
+  }
+}
+@keyframes kfdim {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  60%,
+  100% {
+    opacity: 0.35;
+  }
+}
+.dg .st.red,
+.dg .st.grn {
+  opacity: 0;
+}
+.dg .st.red {
+  animation: stred 9s linear infinite;
+}
+.dg .st.grn {
+  animation: stgrn 9s linear infinite;
+}
+@keyframes stred {
+  0%,
+  52% {
+    opacity: 0;
+  }
+  60%,
+  78% {
+    opacity: 1;
+  }
+  86%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes stgrn {
+  0%,
+  60% {
+    opacity: 0;
+  }
+  68%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Circuit breaker keyframes (12s loop) */
+.dg .lamp {
+  animation: lamp 12s linear infinite;
+}
+@keyframes lamp {
+  0%,
+  40% {
+    fill: var(--biolum);
+  }
+  45%,
+  70% {
+    fill: #f87171;
+  }
+  75%,
+  100% {
+    fill: #fbbf24;
+  }
+}
+.dg .cb-a {
+  animation:
+    dgflow 1.3s linear infinite,
+    cba 12s linear infinite;
+}
+@keyframes cba {
+  0%,
+  40% {
+    opacity: 0.9;
+  }
+  45%,
+  70% {
+    opacity: 0.08;
+  }
+  75%,
+  100% {
+    opacity: 0.45;
+  }
+}
+.dg .cb-b {
+  animation:
+    dgflow 1.3s linear infinite,
+    cbb 12s linear infinite;
+  opacity: 0.08;
+}
+@keyframes cbb {
+  0%,
+  40% {
+    opacity: 0.08;
+  }
+  45%,
+  70% {
+    opacity: 0.9;
+  }
+  75%,
+  100% {
+    opacity: 0.08;
+  }
+}
+.dg .cb-st {
+  opacity: 0;
+}
+.dg .cb-closed {
+  fill: var(--biolum);
+  animation: cbc 12s linear infinite;
+}
+.dg .cb-open {
+  fill: #f87171;
+  animation: cbo 12s linear infinite;
+}
+.dg .cb-half {
+  fill: #fbbf24;
+  animation: cbh 12s linear infinite;
+}
+@keyframes cbc {
+  0%,
+  40% {
+    opacity: 1;
+  }
+  45%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes cbo {
+  0%,
+  40% {
+    opacity: 0;
+  }
+  45%,
+  70% {
+    opacity: 1;
+  }
+  75%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes cbh {
+  0%,
+  70% {
+    opacity: 0;
+  }
+  78%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Multi-tenant keyframes */
+.dg .mt-a {
+  animation: dgflow 0.9s linear infinite;
+}
+.dg .mt-b {
+  animation: dgflow 1.6s linear infinite;
+}
+.dg .mt-c {
+  animation:
+    dgflow 1.3s linear infinite,
+    mtblock 7s linear infinite;
+}
+@keyframes mtblock {
+  0%,
+  44% {
+    opacity: 0.9;
+  }
+  50%,
+  62% {
+    opacity: 0.1;
+  }
+  68%,
+  100% {
+    opacity: 0.9;
+  }
+}
+.dg .mt-blocked {
+  animation: mtb 7s linear infinite;
+  opacity: 0;
+}
+@keyframes mtb {
+  0%,
+  44% {
+    opacity: 0;
+  }
+  50%,
+  62% {
+    opacity: 1;
+  }
+  68%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Scenery layer sizing */
+.trees-back {
+  height: 100%;
+}
+.trees-mid {
+  height: 100%;
+}
+.trees-front {
+  height: 100%;
+}
+.grass {
+  height: 100%;
+}
+
+/* Logo marquee (sponsors / supporters / used-by) */
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 32s) linear infinite;
+}
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  padding-right: 3rem;
+}
+.marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  color: #8494b3;
+  font-size: 14px;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .stars i,
+  .dg .flow,
+  .dg .pkt,
+  .dg .lamp,
+  .dg .cb-st,
+  .dg .st.red,
+  .dg .st.grn,
+  .dg .kf-f1,
+  .dg .kf-f2,
+  .dg .kf-k1,
+  .dg .mt-c,
+  .dg .mt-blocked,
+  .buried-fly,
+  .marquee-track {
+    animation: none !important;
+  }
+  .dg .kf-f2,
+  .dg .cb-b,
+  .dg .st.red,
+  .dg .st.grn,
+  .dg .cb-st,
+  .dg .mt-blocked {
+    opacity: 0;
+  }
+  .dg .kf-f1,
+  .dg .cb-a,
+  .dg .mt-a,
+  .dg .mt-b {
+    opacity: 0.9;
+  }
+  .dg .kf-k1 {
+    opacity: 1;
+  }
+}

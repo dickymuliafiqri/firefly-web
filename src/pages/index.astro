@@ -1,0 +1,37 @@
+---
+import CtaSection from "@/components/CtaSection.astro";
+import FirefliesCanvas from "@/components/FirefliesCanvas";
+import FeatureTabs from "@/components/features/FeatureTabs";
+import Hero from "@/components/Hero.astro";
+import Nav from "@/components/Nav.astro";
+import ParallaxScript from "@/components/ParallaxScript.astro";
+import ProvidersSection from "@/components/ProvidersSection.astro";
+import Scenery from "@/components/Scenery.astro";
+import Sky from "@/components/Sky.astro";
+
+import SupportersSection from "@/components/SupportersSection.astro";
+
+import UndergroundFooter from "@/components/UndergroundFooter.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout>
+  <Sky />
+  <Nav />
+
+  <main class="relative z-[2]">
+    <Hero />
+    <div class="forest-zone relative">
+      <FeatureTabs client:visible />
+      <ProvidersSection />
+      <SupportersSection />
+      <CtaSection />
+      <Scenery />
+    </div>
+  </main>
+
+  <UndergroundFooter />
+  <FirefliesCanvas client:only="react" />
+  <ParallaxScript />
+</BaseLayout>
+

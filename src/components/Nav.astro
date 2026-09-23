@@ -1,0 +1,129 @@
+---
+---
+
+<nav
+  class="nav fixed md:absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-5 sm:px-8 md:px-[clamp(24px,6vw,72px)] py-4 sm:py-6 backdrop-blur-md md:backdrop-blur-none bg-[rgba(2,6,23,0.7)] md:bg-transparent border-b border-white/5 md:border-b-0 transition-colors"
+  aria-label="Main Navigation"
+>
+  <a
+    class="wordmark font-display italic font-semibold text-[20px] sm:text-[22px] text-ink no-underline tracking-[0.01em] hover:text-biolum-glow transition-colors"
+    href="#top"
+  >
+    Firefly
+  </a>
+
+  <!-- Desktop links -->
+  <div class="hidden md:flex items-center gap-[28px]">
+    <a href="#features" class="text-muted text-[14px] tracking-[0.04em] no-underline transition-colors hover:text-biolum-glow">Features</a>
+    <a href="#providers" class="text-muted text-[14px] tracking-[0.04em] no-underline transition-colors hover:text-biolum-glow">Providers</a>
+    <a href="#community" class="text-muted text-[14px] tracking-[0.04em] no-underline transition-colors hover:text-biolum-glow">Community</a>
+    <a href="#get-started" class="text-muted text-[14px] tracking-[0.04em] no-underline transition-colors hover:text-biolum-glow">Get Started</a>
+    <a
+      href="https://github.com/dickymuliafiqri/firefly"
+      target="_blank"
+      rel="noopener"
+      class="text-muted text-[14px] tracking-[0.04em] no-underline transition-colors hover:text-biolum-glow"
+    >
+      GitHub
+    </a>
+  </div>
+
+  <!-- Mobile menu button -->
+  <button
+    type="button"
+    id="mobile-nav-toggle"
+    class="md:hidden relative z-50 flex flex-col justify-center items-center w-10 h-10 rounded-lg text-ink bg-white/5 border border-white/10 hover:border-white/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-biolum-aura"
+    aria-label="Toggle navigation menu"
+    aria-expanded="false"
+    aria-controls="mobile-nav-menu"
+  >
+    <span class="sr-only">Open menu</span>
+    <span class="hamburger-line w-5 h-0.5 bg-ink transition-all duration-300 origin-center my-0.5"></span>
+    <span class="hamburger-line w-5 h-0.5 bg-ink transition-all duration-300 origin-center my-0.5"></span>
+    <span class="hamburger-line w-5 h-0.5 bg-ink transition-all duration-300 origin-center my-0.5"></span>
+  </button>
+
+  <!-- Mobile dropdown menu -->
+  <div
+    id="mobile-nav-menu"
+    class="hidden md:hidden fixed inset-x-4 top-[68px] rounded-2xl bg-[rgba(5,12,28,0.96)] border border-white/10 backdrop-blur-2xl p-5 shadow-2xl flex-col gap-1 z-40"
+    role="dialog"
+    aria-label="Mobile Navigation Menu"
+  >
+    <a href="#features" class="mobile-nav-link text-[15px] font-medium text-ink py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors no-underline">Features</a>
+    <a href="#providers" class="mobile-nav-link text-[15px] font-medium text-ink py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors no-underline">Providers</a>
+    <a href="#community" class="mobile-nav-link text-[15px] font-medium text-ink py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors no-underline">Community</a>
+    <a href="#get-started" class="mobile-nav-link text-[15px] font-medium text-biolum-aura py-2.5 px-3 rounded-lg hover:bg-white/5 transition-colors no-underline">Get Started &rarr;</a>
+    <div class="h-[1px] bg-white/10 my-2"></div>
+    <a
+      href="https://github.com/dickymuliafiqri/firefly"
+      target="_blank"
+      rel="noopener"
+      class="mobile-nav-link text-[14px] text-muted py-2 px-3 rounded-lg hover:bg-white/5 transition-colors no-underline flex items-center justify-between"
+    >
+      <span>GitHub Repository</span>
+      <span class="text-[12px] font-mono text-faint">&nearr;</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+  function setupMobileNav() {
+    const btn = document.getElementById("mobile-nav-toggle");
+    const menu = document.getElementById("mobile-nav-menu");
+    if (!btn || !menu) return;
+
+    const lines = btn.querySelectorAll<HTMLElement>(".hamburger-line");
+
+    function toggle(open?: boolean) {
+      if (!btn || !menu) return;
+      const isOpen = open ?? menu.classList.contains("hidden");
+      if (isOpen) {
+        menu.classList.remove("hidden");
+        menu.classList.add("flex");
+        btn.setAttribute("aria-expanded", "true");
+        if (lines.length === 3 && lines[0] && lines[1] && lines[2]) {
+          lines[0].style.transform = "translateY(6px) rotate(45deg)";
+          lines[1].style.opacity = "0";
+          lines[2].style.transform = "translateY(-6px) rotate(-45deg)";
+        }
+      } else {
+        menu.classList.add("hidden");
+        menu.classList.remove("flex");
+        btn.setAttribute("aria-expanded", "false");
+        if (lines.length === 3 && lines[0] && lines[1] && lines[2]) {
+          lines[0].style.transform = "none";
+          lines[1].style.opacity = "1";
+          lines[2].style.transform = "none";
+        }
+      }
+    }
+
+    btn.addEventListener("click", () => toggle());
+
+    const links = menu.querySelectorAll(".mobile-nav-link");
+    for (const link of links) {
+      link.addEventListener("click", () => toggle(false));
+    }
+
+    document.addEventListener("click", (e) => {
+      const target = e.target as Node;
+      if (!btn.contains(target) && !menu.contains(target)) {
+        toggle(false);
+      }
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        toggle(false);
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupMobileNav);
+  } else {
+    setupMobileNav();
+  }
+</script>
+

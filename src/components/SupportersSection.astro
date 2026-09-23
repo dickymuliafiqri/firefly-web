@@ -1,0 +1,178 @@
+---
+import {
+  type Sponsor,
+  type Supporter,
+  sponsors,
+  supporters,
+  type UsedBy,
+  usedBy,
+} from "@/data/supporters";
+
+// Duplicate items to guarantee track width exceeds any viewport for seamless CSS marquee looping
+function repeatToFill<T>(arr: T[], minCount: number): T[] {
+  const result: T[] = [];
+  while (result.length < minCount) {
+    result.push(...arr);
+  }
+  return result;
+}
+
+const repeatedSponsors = repeatToFill<Sponsor>(sponsors, 12);
+const repeatedSupporters = repeatToFill<Supporter>(supporters, 12);
+
+// Split usedBy into 2 multi-line rows
+const half = Math.ceil(usedBy.length / 2);
+const row1 = repeatToFill<UsedBy>(usedBy.slice(0, half), 10);
+const row2 = repeatToFill<UsedBy>(usedBy.slice(half), 10);
+---
+
+<section
+  class="section max-w-[1080px] mx-auto px-4 sm:px-6 pt-16 sm:pt-20 md:pt-[14vh] pb-8 md:pb-[4vh] scroll-mt-20 md:scroll-mt-8"
+  id="community"
+  aria-label="Sponsors, supporters, and teams using Firefly"
+>
+  <h2
+    class="font-display font-medium text-[clamp(30px,4vw,46px)] tracking-[-0.01em] mb-4"
+  >
+    Backed by builders, built in the open.
+  </h2>
+  <p class="max-w-[620px] text-muted leading-[1.7] text-[16px] mb-7 sm:mb-12">
+    Firefly is free and open-source under the MIT license. Maintained with
+    care, contributions welcome.
+  </p>
+
+  <p
+    class="font-mono text-[11.5px] tracking-[0.18em] uppercase text-faint mb-5"
+  >
+    Sponsors
+  </p>
+  <div
+    class="marquee mb-12"
+    style="--marquee-duration: 40s;"
+    role="list"
+    aria-label="Sponsors"
+  >
+    <div class="marquee-track">
+      {
+        [0, 1].map((copy) => (
+          <div
+            class="marquee-group"
+            aria-hidden={copy === 1 ? "true" : undefined}
+          >
+            {repeatedSponsors.map((sponsor) => (
+              <a
+                role="listitem"
+                href={sponsor.url}
+                target="_blank"
+                rel="noopener"
+                class="marquee-item no-underline"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  class="w-[20px] h-[20px] shrink-0 fill-[#8494b3] opacity-80"
+                  aria-hidden="true"
+                >
+                  <path d={sponsor.path} />
+                </svg>
+                <span class="font-semibold text-ink">{sponsor.name}</span>
+                <span class="font-normal text-faint">
+                  &middot; {sponsor.tier === "lead" ? "Lead Sponsor" : "Sponsor"}
+                </span>
+              </a>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <p
+    class="font-mono text-[11.5px] tracking-[0.18em] uppercase text-faint mb-5"
+  >
+    Individual supporters
+  </p>
+  <div
+    class="marquee mb-12"
+    style="--marquee-duration: 46s;"
+    role="list"
+    aria-label="Individual supporters"
+  >
+    <div class="marquee-track reverse">
+      {
+        [0, 1].map((copy) => (
+          <div
+            class="marquee-group"
+            aria-hidden={copy === 1 ? "true" : undefined}
+          >
+            {repeatedSupporters.map((person) => (
+              <span role="listitem" class="marquee-item">
+                <span class="font-semibold text-ink">{person.name}</span>
+                <span class="font-normal text-faint">&middot; {person.role}</span>
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <p
+    class="font-mono text-[11.5px] tracking-[0.18em] uppercase text-faint mb-5"
+  >
+    Used by
+  </p>
+  <div class="flex flex-col gap-4">
+    <div
+      class="marquee"
+      style="--marquee-duration: 42s;"
+      role="list"
+      aria-label="Teams using Firefly line 1"
+    >
+      <div class="marquee-track">
+        {
+          [0, 1].map((copy) => (
+            <div
+              class="marquee-group"
+              aria-hidden={copy === 1 ? "true" : undefined}
+            >
+              {row1.map((team) => (
+                <span role="listitem" class="marquee-item">
+                  <span class="font-semibold text-ink">{team.name}</span>
+                  <span class="font-normal text-faint">&middot; {team.note}</span>
+                </span>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <div
+      class="marquee"
+      style="--marquee-duration: 48s;"
+      role="list"
+      aria-label="Teams using Firefly line 2"
+    >
+      <div class="marquee-track reverse">
+        {
+          [0, 1].map((copy) => (
+            <div
+              class="marquee-group"
+              aria-hidden={copy === 1 ? "true" : undefined}
+            >
+              {row2.map((team) => (
+                <span role="listitem" class="marquee-item">
+                  <span class="font-semibold text-ink">{team.name}</span>
+                  <span class="font-normal text-faint">&middot; {team.note}</span>
+                </span>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+  <p class="mt-8 text-center text-faint text-[13.5px] leading-[1.7]">
+    The names above are placeholders showing how this wall will look.
+    Your team could be the first real one here.
+  </p>
+</section>
